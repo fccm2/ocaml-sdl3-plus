@@ -169,6 +169,8 @@ Val_event_key(SDL_KeyboardEvent *key, int tag)
             case SDLK_7: return Val_key_event(tag, 37);
             case SDLK_8: return Val_key_event(tag, 38);
             case SDLK_9: return Val_key_event(tag, 39);
+
+            default: return Val_int(0);
             }
         }
     }
