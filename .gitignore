@@ -12,3 +12,6 @@
 *.opt
 *.exe
 _*
+test/atlas-2025-06-13_1.bmp
+test/atlas-2025-06-13_1.png
+test/atlas-2025-06-13_1.txt
