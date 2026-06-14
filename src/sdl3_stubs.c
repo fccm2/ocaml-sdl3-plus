@@ -82,11 +82,11 @@ Val_some(value v)
 /* Convert Events to ocaml values */
 
 static value
-Val_key_down_event(int c)
+Val_key_event(int tag, int c)
 {
     CAMLparam0();
     CAMLlocal1(m);
-    m = caml_alloc(1, 0);
+    m = caml_alloc(1, tag);
     Store_field(m, 0, Val_int(c));
     CAMLreturn(m);
 }
@@ -96,7 +96,7 @@ Val_mouse_motion_event(int x, int y)
 {
     CAMLparam0();
     CAMLlocal1(m);
-    m = caml_alloc(2, 1);
+    m = caml_alloc(2, 2);
     Store_field(m, 0, Val_int(x));
     Store_field(m, 1, Val_int(y));
     CAMLreturn(m);
@@ -107,7 +107,7 @@ Val_mouse_button_event(SDL_MouseButtonEvent *button, int state)
 {
     CAMLparam0();
     CAMLlocal1(m);
-    m = caml_alloc(3, 2);
+    m = caml_alloc(3, 3);
     Store_field(m, 0, Val_int(button->x));
     Store_field(m, 1, Val_int(button->y));
     Store_field(m, 2, Val_int(state));
@@ -115,71 +115,60 @@ Val_mouse_button_event(SDL_MouseButtonEvent *button, int state)
 }
 
 static value
-Val_event_key_down(SDL_KeyboardEvent *key)
+Val_event_key(SDL_KeyboardEvent *key, int tag)
 {
     SDL_Scancode scancode = key->scancode;
     switch (scancode) {
         /* Directions */
-        case SDL_SCANCODE_LEFT:
-            return Val_key_down_event(0);
-        case SDL_SCANCODE_RIGHT:
-            return Val_key_down_event(1);
-        case SDL_SCANCODE_UP:
-            return Val_key_down_event(2);
-        case SDL_SCANCODE_DOWN:
-            return Val_key_down_event(3);
+        case SDL_SCANCODE_LEFT:  return Val_key_event(tag, 0);
+        case SDL_SCANCODE_RIGHT: return Val_key_event(tag, 1);
+        case SDL_SCANCODE_UP:    return Val_key_event(tag, 2);
+        case SDL_SCANCODE_DOWN:  return Val_key_event(tag, 3);
 
-        case SDL_SCANCODE_SPACE:
-            return Val_key_down_event(40);
-
-        case SDL_SCANCODE_PAGEUP:
-            return Val_key_down_event(41);
-
-        case SDL_SCANCODE_PAGEDOWN:
-            return Val_key_down_event(42);
-
-        case SDL_SCANCODE_ESCAPE:
-            return Val_key_down_event(43);
+        case SDL_SCANCODE_SPACE:     return Val_key_event(tag, 40);
+        case SDL_SCANCODE_PAGEUP:    return Val_key_event(tag, 41);
+        case SDL_SCANCODE_PAGEDOWN:  return Val_key_event(tag, 42);
+        case SDL_SCANCODE_ESCAPE:    return Val_key_event(tag, 43);
 
         default: {
             switch (key->key) {
-            case SDLK_A: return Val_key_down_event(4);
-            case SDLK_B: return Val_key_down_event(5);
-            case SDLK_C: return Val_key_down_event(6);
-            case SDLK_D: return Val_key_down_event(7);
-            case SDLK_E: return Val_key_down_event(8);
-            case SDLK_F: return Val_key_down_event(9);
-            case SDLK_G: return Val_key_down_event(10);
-            case SDLK_H: return Val_key_down_event(11);
-            case SDLK_I: return Val_key_down_event(12);
-            case SDLK_J: return Val_key_down_event(13);
-            case SDLK_K: return Val_key_down_event(14);
-            case SDLK_L: return Val_key_down_event(15);
-            case SDLK_M: return Val_key_down_event(16);
-            case SDLK_N: return Val_key_down_event(17);
-            case SDLK_O: return Val_key_down_event(18);
-            case SDLK_P: return Val_key_down_event(19);
-            case SDLK_Q: return Val_key_down_event(20);
-            case SDLK_R: return Val_key_down_event(21);
-            case SDLK_S: return Val_key_down_event(22);
-            case SDLK_T: return Val_key_down_event(23);
-            case SDLK_U: return Val_key_down_event(24);
-            case SDLK_V: return Val_key_down_event(25);
-            case SDLK_W: return Val_key_down_event(26);
-            case SDLK_X: return Val_key_down_event(27);
-            case SDLK_Y: return Val_key_down_event(28);
-            case SDLK_Z: return Val_key_down_event(29);
+            case SDLK_A: return Val_key_event(tag, 4);
+            case SDLK_B: return Val_key_event(tag, 5);
+            case SDLK_C: return Val_key_event(tag, 6);
+            case SDLK_D: return Val_key_event(tag, 7);
+            case SDLK_E: return Val_key_event(tag, 8);
+            case SDLK_F: return Val_key_event(tag, 9);
+            case SDLK_G: return Val_key_event(tag, 10);
+            case SDLK_H: return Val_key_event(tag, 11);
+            case SDLK_I: return Val_key_event(tag, 12);
+            case SDLK_J: return Val_key_event(tag, 13);
+            case SDLK_K: return Val_key_event(tag, 14);
+            case SDLK_L: return Val_key_event(tag, 15);
+            case SDLK_M: return Val_key_event(tag, 16);
+            case SDLK_N: return Val_key_event(tag, 17);
+            case SDLK_O: return Val_key_event(tag, 18);
+            case SDLK_P: return Val_key_event(tag, 19);
+            case SDLK_Q: return Val_key_event(tag, 20);
+            case SDLK_R: return Val_key_event(tag, 21);
+            case SDLK_S: return Val_key_event(tag, 22);
+            case SDLK_T: return Val_key_event(tag, 23);
+            case SDLK_U: return Val_key_event(tag, 24);
+            case SDLK_V: return Val_key_event(tag, 25);
+            case SDLK_W: return Val_key_event(tag, 26);
+            case SDLK_X: return Val_key_event(tag, 27);
+            case SDLK_Y: return Val_key_event(tag, 28);
+            case SDLK_Z: return Val_key_event(tag, 29);
 
-            case SDLK_0: return Val_key_down_event(30);
-            case SDLK_1: return Val_key_down_event(31);
-            case SDLK_2: return Val_key_down_event(32);
-            case SDLK_3: return Val_key_down_event(33);
-            case SDLK_4: return Val_key_down_event(34);
-            case SDLK_5: return Val_key_down_event(35);
-            case SDLK_6: return Val_key_down_event(36);
-            case SDLK_7: return Val_key_down_event(37);
-            case SDLK_8: return Val_key_down_event(38);
-            case SDLK_9: return Val_key_down_event(39);
+            case SDLK_0: return Val_key_event(tag, 30);
+            case SDLK_1: return Val_key_event(tag, 31);
+            case SDLK_2: return Val_key_event(tag, 32);
+            case SDLK_3: return Val_key_event(tag, 33);
+            case SDLK_4: return Val_key_event(tag, 34);
+            case SDLK_5: return Val_key_event(tag, 35);
+            case SDLK_6: return Val_key_event(tag, 36);
+            case SDLK_7: return Val_key_event(tag, 37);
+            case SDLK_8: return Val_key_event(tag, 38);
+            case SDLK_9: return Val_key_event(tag, 39);
             }
         }
     }
@@ -390,8 +379,10 @@ caml_SDL_PollEvent(value u)
     switch (event.type) {
     case SDL_EVENT_QUIT:
         return Val_some(Val_int(1));
+    case SDL_EVENT_KEY_UP:
+        return Val_some(Val_event_key(&(event.key), 0));
     case SDL_EVENT_KEY_DOWN:
-        return Val_some(Val_event_key_down(&(event.key)));
+        return Val_some(Val_event_key(&(event.key), 1));
     case SDL_EVENT_MOUSE_MOTION:
         return Val_some(Val_mouse_motion_event(event.motion.x, event.motion.y));
 
@@ -446,6 +437,20 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
     case SDL_EVENT_QUIT:
         return SDL_APP_SUCCESS;
 
+    case SDL_EVENT_KEY_UP:
+      { SDL_Scancode scancode = event->key.scancode;
+        val_event = Val_int(0);
+        switch (scancode) {
+        /* Quit */
+        case SDL_SCANCODE_ESCAPE:
+        //case SDL_SCANCODE_Q:
+            return SDL_APP_SUCCESS;
+            break;
+        default:
+            val_event = Val_event_key(&(event->key), 0);
+        }
+      } break;
+
     case SDL_EVENT_KEY_DOWN:
       { SDL_Scancode scancode = event->key.scancode;
         val_event = Val_int(0);
@@ -456,7 +461,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
             return SDL_APP_SUCCESS;
             break;
         default:
-            val_event = Val_event_key_down(&(event->key));
+            val_event = Val_event_key(&(event->key), 1);
         }
       } break;
 

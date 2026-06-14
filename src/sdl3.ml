@@ -30,6 +30,7 @@ end
 
 type event =
   | Unhandled_event
+  | Key_up_event of Scancode.t
   | Key_down_event of Scancode.t
   | Mouse_motion_event of int * int
   | Mouse_button_event of int * int * bool
